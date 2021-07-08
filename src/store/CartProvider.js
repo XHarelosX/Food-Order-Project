@@ -5,9 +5,9 @@ const defaultCartState = {
   items: [],
   totalAmount: 0,
 };
-// This is what UseReducer use when it called.
+// This is what UseReducer use when Action is called from somewhere.
 const cartReducer = (state, action) => {
-  if (action.type === "ADD") {             
+  if (action.type === "ADD") {
     const updatedTotalAmount =
       state.totalAmount + action.item.price * action.item.amount;
 
@@ -59,12 +59,19 @@ const cartReducer = (state, action) => {
     };
   }
 
+  if (action.type === "CLEAR") {
+    return defaultCartState;
+  }
+
   return defaultCartState;
 };
 
 const CartProvider = (props) => {
   //----------------------------------------------->
-  const [cartState, dispatchCartAction] = useReducer( cartReducer, defaultCartState );
+  const [cartState, dispatchCartAction] = useReducer(
+    cartReducer,
+    defaultCartState
+  );
 
   const addItemToCartHandler = (item) => {
     dispatchCartAction({
@@ -79,12 +86,15 @@ const CartProvider = (props) => {
       id: id,
     });
   };
-
+  const clearCartHandler = () => {
+    dispatchCartAction({ type: "CLEAR" });
+  };
   const cartContext = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
     addItem: addItemToCartHandler,
     removeItem: removeItemFromCartHandler,
+    clearCart: clearCartHandler,
   };
 
   return (
