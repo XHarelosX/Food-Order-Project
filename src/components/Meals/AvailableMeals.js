@@ -43,6 +43,7 @@ const AvailableMeals = () => {
         loadedMeals.push({
           id: mealId,
           description: mealsObject[mealId].description,
+          name: mealsObject[mealId].name,
           price: Number(mealsObject[mealId].price),
         });
       }
@@ -57,19 +58,31 @@ const AvailableMeals = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const mealList = meals.map((meal) => (
-    <MealItem
-      id={meal.id}
-      key={meal.id}
-      name={meal.name}
-      description={meal.description}
-      price={meal.price}
-    />
-  ));
+  const mealsFound = () => {
+    if (isLoading) {
+      return <p>Loading...</p>;
+    }
+    if (error) {
+      return <p>Falied to get meals...</p>;
+    }
+    const mealList = meals.map((meal) => (
+      <MealItem
+        id={meal.id}
+        key={meal.id}
+        name={meal.name}
+        description={meal.description}
+        price={meal.price}
+      />
+    ));
+    return mealList;
+  };
+
+  const mealListFound = mealsFound();
+
   return (
     <section className={classes.meals}>
       <Card>
-        <ul>{mealList.length > 0 ? mealList : <p>Loading...</p>}</ul>
+        <ul>{mealListFound}</ul>
       </Card>
     </section>
   );

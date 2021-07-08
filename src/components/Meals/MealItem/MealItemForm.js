@@ -10,6 +10,7 @@ const MealItemForm = (props) => {
     event.preventDefault();
     const enterdAmount = amountInputRef.current.value; // Always return a string!
     const enterdAmountNumber = +enterdAmount;
+    
     if (
       enterdAmount.trim().length === 0 ||
       enterdAmountNumber < 1 ||
